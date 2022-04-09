@@ -1,0 +1,21 @@
+h1 {
+    color: rgb(42, 42, 119);
+    background: gray;
+    /* margin-left: 100px;
+    margin-bottom: 200px; */
+
+    /* Margin: especio fuera de la caja (margen externo) */
+    margin: 100px;
+
+    /* Padding: espacio dentro de la caja (margen interno) */
+    padding: 100px;
+}
+#unico {
+    color: aquamarine;
+
+    /* Ancho */
+    width: 25%;
+}
+.texto{
+    color: brown;
+}
