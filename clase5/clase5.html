@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 5 - Vue</title>
+    <!--  bootstrap 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <!-- bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- vue 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body class="bg-dark text-white">
+    <!-- fondo oscuro y texto blanco -->
+    <div id="app">
+        <div class="container mt-4">
+            <!-- contenedor de bootstrap con margen de arriba en 4 -->
+            <h1>App: {{ miTitulo }}</h1>
+            <div class="row justify-content-center">
+                <!-- linea justificada y en el centro -->
+                <div class="col-4">
+                    <!-- tamaño bootsrap que se divide en 12 -->
+                    <div class="mb-3">
+                        <!-- margen de abajo -->
+                        <label for="id" class="form-label">Nombre</label> <!-- Etiqueta para formulario -->
+                        <input type="text" class="form-control" id="name" v-model="charName">
+                        <!-- form-control ocupa la totalidad del container -->
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="id" class="form-label">Estado</label>
+                        <select v-model="selectEstado" class="form-control">
+                            <!-- <option value="alive">Alive</option>
+                            <option value="dead">Dead</option>
+                            <option value="unknown">Unknown</option>
+                            <option value="todos" selected>Todos</option> -->
+                            <option value="" selected="selected">Todos</option>
+                            <option v-for="(estado, index) in estados" :key="index" :value="estado">{{estado}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="id" class="form-label">Especie</label>
+                        <select v-model="selectEspecie" class="form-control">
+                            <!-- <option value="human">Human</option>
+                            <option value="humanoid">humanoid</option>                        
+                            <option value="todos" selected>Todos</option> -->
+                            <option value="" selected="selected">Todas</option>
+                            <option v-for="(especie, index) in especies" :key="index" :value="especie">{{especie}}
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+                <!-- <div class="d-grid col-4"> d-grid???
+                    <button class="btn btn-info text-white" onclick="search()" type="button">Buscar</button> class da el color del boton y del texto del boton
+                </div>   -->
+            </div>
+            <!-- <nav aria-label="Page navigation example">
+                <ul class="pagination" id="paginator">
+                
+                
+                </ul>
+            </nav> -->
+            <div class="row">
+                <div v-for="personaje in filtrarPersonajes" :key="personaje.id" class="col-md-3">
+                    <div class="card">
+                        <img :src="personaje.image" class="card-img-top" alt="imagen de personaje.name">
+                        <div class="card-body bg-dark text-white">
+                            <h5 class="card-title">{{personaje.name}}</h5>
+                            <p class="card-text">Origen : {{personaje.origin.name}}.</p>
+                            <p class="card-text">Estado : {{personaje.status}}.</p>
+                            <p class="card-text">Especie : {{personaje.species}}.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+
+    const vue = new Vue({  /* Creacion objeto vue */
+
+        el: '#app',  /* identifiacion del elemento */
+
+        data() {
+            return {
+                miTitulo: 'Rick and Morty API',
+                estados: ['Alive', 'Dead', 'Unknown'],
+                especies: ['Human', 'Alien', 'Humanoid'],
+                selectEstado: "",
+                selectEspecie: "",
+                personajes: [],
+                url: 'https://rickandmortyapi.com/api/character',
+                charName: "",
+            }
+        },
+
+        async created() {
+            const response = await fetch(this.url)
+            const { info, results } = await response.json();
+            this.personajes = results
+        },
+
+        computed: {
+            filtrarPersonajes: function () {
+                let filtrados = this.personajes;
+                if (this.charName) {
+                    console.log("Hay un valor en charName, filtro", this.charName)
+                    filtrados = filtrados.filter(
+                        p => p.name.toLowerCase().indexOf(this.charName.toLowerCase()) > -1
+                    );
+                }
+                if (this.selectEstado) {
+                    console.log("Hay un estado seleccionado, filtro", this.selectEstado)
+                    filtrados = filtrados.filter(
+                        p => p.status === this.selectEstado
+                    );
+                }
+                if (this.selectEspecie) {
+                    console.log("Hay una species seleccionada, filtro", this.selectEspecie)
+                    filtrados = filtrados.filter(
+                        p => p.species === this.selectEspecie
+                    );
+                }
+                return filtrados;
+            },
+
+        }
+
+
+
+    })
+
+</script>
+
+
+
+<!-- - En un nuevo archivo html crear una instancia de vue.
+- Traer una lista de objetos desde una api (puede ser la misma que usamos la clase anterior).
+- Generar un input para ingresar una busqueda por nombre (o la propiedad que prefieran).
+- Crear una propiedad computada que "use" esa busqueda y que devuelva un array filtrado por la misma.
+- Mostrar esa propiedad computada en la vista.
+https://v2.vuejs.org/v2/guide/computed.html -->

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 5 - Vue</title>
+
+    <!--  bootstrap 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <!-- bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- vue 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ miTexto }} <!-- interpolacion -->
+        <p v-text="miTexto"> </p> <!-- A un elemento se le pone el valor de una propiedad -->
+        <p v-text="miTexto" v-if="miContador == 0"></p> <!-- pone el texto si se da la condicion -->
+        <p v-text="miTexto" v-if="miContador == 0" v-bind:title="miMensaje"></p> <!-- pone el texto que contiene la propiedad de title en forma dinamica -->
+        <p v-text="miTexto" v-if="miContador == 0" :title="miMensaje"></p> <!-- si se pone : es equivalente al v-bind -->
+        <p v-text="miTexto" v-if="miContador == 0" title="miMensaje"></p> <!-- pone el texto anotado estatico y no el valor de la propiedad -->
+        <p v-text="miTexto" v-if="miContador == 0" :title="getMensaje()"></p> <!-- busca el metodo -->
+        <button type="button" v-on:click="aumentarContador">Aumentar contador</button> <!-- v-on:click = @click -->
+        <h1>Contador: {{ miContador }}</h1>
+
+        <br>
+
+        <button type="button" @click="addPersonaje">Agregar personaje</button>
+
+        <!-- v-if saca del DOM si es false // v-show oculta del DOM si es false, pero no lo elimina -->
+
+        <div v-for="personaje in personajes" :key="personaje.nombre"> <!-- for, se usa el item con el array y un valor key -->
+            <h1>{{personaje.name}} </h1>
+        </div>
+
+        <br>
+        <input type="text" v-model='nombre'>  <!-- lleva el texto del input a la propiedad en forma bidireccional -->
+        <h1>{{ nombre }}</h1>
+    
+
+ 
+    </div>
+    
+</body> 
+</html>
+
+<script>
+    
+    const vue = new Vue ({  /* Creacion objeto vue */
+
+        el: '#app',  /* identifiacion del elemento */
+
+        data() {   /* atributos o propiedades del objeto*/
+            return {
+                miTexto: 'Hola mundo',
+                miContador: 0,
+                personajes: [ ],
+                // {nombre: 'personaje 1'}, {nombre: 'personaje 2'}, {nombre: 'personaje 3'}
+                miMensaje: 'Esto es un mensaje',
+                nombre: null,
+                url: 'https://rickandmortyapi.com/api/character',
+            }
+        },
+
+        methods: {    /* metodos del objeto*/
+            getMensaje(){
+                return this.miMensaje
+            },
+            aumentarContador() {
+                this.miContador++
+            },
+            addPersonaje(){
+                const p = {nombre: 'personaje 4'}
+                this.personajes.push(p)
+
+            },
+        },
+
+        async created() {  /* al cargar la pagina */
+            /* aca se cargarian las apis con el fetch */
+            const response = await fetch(this.url)
+            const {info, results} = await response.json();
+            console.log(results);
+            this.personajes = results
+        },
+
+        computed: { /* funcion que devuelve un valor o string que depende del valor de otra propiedad */
+            arrayFiltrado()  {
+                return this.personajes.filter()
+            },
+
+        }
+
+    })
+
+
+</script>
