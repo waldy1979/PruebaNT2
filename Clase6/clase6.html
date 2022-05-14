@@ -20,15 +20,18 @@
 
 <body>
     <div id="app">
-        <h1>Prueba</h1>
-        <div class="row mt-4">
-            <mi-carta v-for="personaje in personajes" :key="personaje.id" :personaje="personaje">
+        <div id="todos">
+            <div class="container mt-4">
+                <div class="row">
+                    <mi-carta v-for="personaje in personajes" :key="personaje.id" :personaje="personaje" class="col-3">
+                    </mi-carta>
+                </div>
+            </div>
         </div>
-        </mi-carta>
-
-
-
-
+    </div>
+    <div v-if="personajePadre">
+        <h2>Su eleccion fue:</h2>
+        <mi-carta></mi-carta>
     </div>
 
 </body>
@@ -37,20 +40,26 @@
 
 <script>
     Vue.component('mi-carta', {
-        template: `<div class="container row">
-            <div class="card col-4">
-            
-
-                <img :src="personaje.image" class="card-img-top" alt="imagen de personaje.name">
-                <div class="card-body bg-dark text-white">
-                    <h5 class="card-title">{{ personaje.name }}</h5>
-                    <p class="card-text">Origen : {{ personaje.origin.name }}.</p>
-                    <p class="card-text">Estado : {{ personaje.status }}.</p>
-                    <p class="card-text">Especie : {{ personaje.species }}.</p>
-                </div>
+        template: `
+            <div class="row mt-4">
+                <div class="card">
+                    <img :src="personaje.image" class="card-img-top" alt="imagen de personaje.name">
+                    <div class="card-body bg-dark text-white">
+                        <h5 class="card-title">{{ personaje.name }}</h5>
+                        <p class="card-text">Origen : {{ personaje.origin.name }}.</p>
+                        <p class="card-text">Estado : {{ personaje.status }}.</p>
+                        <p class="card-text">Especie : {{ personaje.species }}.</p>
+                        <button @click="seleccionar">Seleccionar</button>
+                    </div>
                 </div>
             </div> `,
         props: ['personaje'],
+        methods: {
+            seleccionar() {
+                this.$emit('carta-click', this.personaje);
+                console.log('informo click en el componente')
+            }
+        },
     })
 
     const vue = new Vue({
@@ -58,6 +67,7 @@
         data() {
             return {
                 personajes: [],
+                personajePadre: null,
                 url: 'https://rickandmortyapi.com/api/character',
             }
         },
