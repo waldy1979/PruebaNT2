@@ -1,0 +1,7 @@
+- Armar un componente para mostrar un array de objetos
+- Mostrar un nombre y una imagen
+- Al hacer click en un objeto, emitir un evento, recibir el objeto en el y mostrarlo el 
+json en algun lugar del template del padre. <samp> {{ }} </samp> 
+- Usar el componente 2 veces al mismo tiempo.
+        https://rickandmortyapi.com/api/character
+	https://www.breakingbadapi.com/api/characters?limit=5

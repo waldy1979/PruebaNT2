@@ -1,0 +1,6 @@
+En un nuevo archivo html crear una instancia de vue.
+- Traer una lista de objetos desde una api (puede ser la misma que usamos la clase anterior).
+- Generar un input para ingresar una busqueda por nombre (o la propiedad que prefieran).
+- Crear una propiedad computada que "use" esa busqueda y que devuelva un array filtrado por la misma.
+- Mostrar esa propiedad computada en la vista.
+https://v2.vuejs.org/v2/guide/computed.html
