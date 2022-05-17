@@ -1,28 +1,22 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Bienvenido a Vue.js App" /> -->
-    <AppHeader />
-    <!-- <router-link to="/home">Ir a home</router-link> -->
-    <hr />
-    <router-view></router-view>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <HelloWorld msg="Bienvenido a Vue.js App" />
   </div>
 </template>
 
 <script>
-/* import HelloWorld from "./components/HelloWorld.vue"; */
-
-import AppHeader from "./components/AppHeader.vue";
+import HelloWorld from "./components/HelloWorld.vue";
 
 export default {
   name: "App",
   components: {
-    AppHeader,
-    /* },
+    HelloWorld,
+  },
   data() {
     return {
       miPropiedad: "Hola",
-    }; */
+    };
   },
 };
 </script>

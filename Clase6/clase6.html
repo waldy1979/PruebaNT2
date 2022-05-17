@@ -23,15 +23,16 @@
         <div id="todos">
             <div class="container mt-4">
                 <div class="row">
-                    <mi-carta v-for="personaje in personajes" :key="personaje.id" :personaje="personaje" class="col-3">
+                    <mi-carta v-for="personaje in personajes" :key="personaje.id" :personaje="personaje"
+                        @carta-click="mostrarEnPadre" class="col-3">
                     </mi-carta>
                 </div>
             </div>
         </div>
-    </div>
-    <div v-if="personajePadre">
-        <h2>Su eleccion fue:</h2>
-        <mi-carta></mi-carta>
+        <div v-if="personajePadre" class="col-6">
+            <h2>Su eleccion fue:</h2>
+            <mi-carta :personaje="personajePadre"></mi-carta>
+        </div>
     </div>
 
 </body>
@@ -71,6 +72,14 @@
                 url: 'https://rickandmortyapi.com/api/character',
             }
         },
+
+        methods: {
+            mostrarEnPadre(personaje) {
+                this.personajePadre = personaje;
+            }
+        },
+
+
         async created() {
             console.log('Inicio')
             const response = await fetch(this.url)
